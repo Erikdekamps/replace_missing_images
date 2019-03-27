@@ -16,7 +16,7 @@ class ReplaceMissingImagesSettingsForm extends ConfigFormBase {
    */
   protected function getEditableConfigNames() {
     return [
-      'replace_missing_images.settings'
+      'replace_missing_images.settings',
     ];
   }
 
@@ -50,6 +50,21 @@ class ReplaceMissingImagesSettingsForm extends ConfigFormBase {
           ':input[name="use_custom_placeholder_service"]' => ['checked' => TRUE],
         ],
       ],
+      '#description' => $this->t('Use a predefined placeholder service.'),
+    ];
+
+    $form['default_placeholder_image_width'] = [
+      '#title' => $this->t('Placeholder image width'),
+      '#type' => 'number',
+      '#default_value' => $config->get('default_placeholder_image_width'),
+      '#description' => $this->t('The placeholder image width to use.'),
+    ];
+
+    $form['default_placeholder_image_height'] = [
+      '#title' => $this->t('Placeholder image height'),
+      '#type' => 'number',
+      '#default_value' => $config->get('default_placeholder_image_height'),
+      '#description' => $this->t('The placeholder image height to use.'),
     ];
 
     $form['use_custom_placeholder_service'] = [
@@ -60,7 +75,7 @@ class ReplaceMissingImagesSettingsForm extends ConfigFormBase {
 
     $form['custom_placeholder_service'] = [
       '#title' => $this->t('Custom placeholder service'),
-      '#description' => $this->t('For example: %url', ['%url' => 'https://placekitten.com/408/287']),
+      '#description' => $this->t('Placeholders [width] and [height] can be used. For example: %url.', ['%url' => 'https://placekitten.com/[width]/[height]']),
       '#type' => 'url',
       '#default_value' => $config->get('custom_placeholder_service'),
       '#states' => [
@@ -70,7 +85,30 @@ class ReplaceMissingImagesSettingsForm extends ConfigFormBase {
       ],
     ];
 
+    $form['unique'] = [
+      '#title' => $this->t('Unique image'),
+      '#description' => $this->t('Add a hash to the image url to (try and) make sure you get a fresh image each page load.'),
+      '#type' => 'checkbox',
+      '#default_value' => $config->get('unique'),
+    ];
+
     return parent::buildForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+
+    // Get the submitted values.
+    $values = $form_state->getValues();
+
+    // Set the predefined placeholder service to none if using a custom one.
+    if (!empty($values['use_custom_placeholder_service'])) {
+      $form_state->setValue('predefined_placeholder_service', '_none');
+    }
+
+    parent::validateForm($form, $form_state);
   }
 
   /**
@@ -78,12 +116,17 @@ class ReplaceMissingImagesSettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
+    // Get the submitted values.
     $values = $form_state->getValues();
 
+    // Save the configuration.
     $this->config('replace_missing_images.settings')
       ->set('predefined_placeholder_service', $values['predefined_placeholder_service'])
       ->set('use_custom_placeholder_service', $values['use_custom_placeholder_service'])
       ->set('custom_placeholder_service', $values['custom_placeholder_service'])
+      ->set('default_placeholder_image_width', $values['default_placeholder_image_width'])
+      ->set('default_placeholder_image_height', $values['default_placeholder_image_height'])
+      ->set('unique', $values['unique'])
       ->save();
 
     parent::submitForm($form, $form_state);
@@ -95,7 +138,24 @@ class ReplaceMissingImagesSettingsForm extends ConfigFormBase {
   private function getDefaultPlaceholderLinks() {
     return [
       '_none' => $this->t('- None -'),
-      'https://placekitten.com/g/600/400' => 'placekitten.com',
+      'https://baconmockup.com/[width]/[height]' => 'Baconmockup',
+      'https://dummyimage.com/[width]x[height]' => 'Dummy image',
+      'https://fakeimg.pl/[width]/[height]' => 'Fake images please?',
+      'https://www.fillmurray.com/[width]/[height]' => 'Fill murray',
+      'https://imgplaceholder.com/[width]/[height]' => 'Imgplaceholder',
+      'https://ipsumimage.appspot.com/[width]x[height]' => 'Ipsum image',
+      'https://picsum.photos/[width]/[height]' => 'Lorem picsum',
+      'https://loremflickr.com/[width]/[height]' => 'Loremflickr',
+      'http://lorempixel.com/[width]/[height]' => 'Lorempixel',
+      'https://placebear.com/[width]/[height]' => 'Placebear',
+      'https://placebeard.it/[width]x[height]' => 'Placebeard.it',
+      'https://placebeyonce.com/[width]-[height]' => 'Placebeyoncé',
+      'https://www.placecage.com/[width]/[height]' => 'Placecage',
+      'http://via.placeholder.com/[width]x[height]' => 'Placeholder',
+      'http://placeimg.com/[width]/[height]/any' => 'Placeimg',
+      'https://placekitten.com/g/[width]/[height]' => 'Placekitten',
+      'https://placezombie.com/[width]x[height]' => 'Placezombie',
+      'https://www.stevensegallery.com/[width]/[height]' => 'Steven Segallery',
     ];
   }
 

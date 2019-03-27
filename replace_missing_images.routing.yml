@@ -2,7 +2,7 @@ replace_missing_images.admin_settings:
   path: '/admin/config/media/replace-missing-images'
   defaults:
     _form: '\Drupal\replace_missing_images\Form\ReplaceMissingImagesSettingsForm'
-    _title: 'Replace Missing Images Settings'
+    _title: 'Replace Missing Images'
   requirements:
     _permission: 'administer site configuration'
     _module_dependencies: 'toolbar'

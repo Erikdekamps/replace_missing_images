@@ -1,0 +1,4 @@
+name: 'Replace missing images'
+type: module
+description: 'Replaces missing images with remote (dummy) images.'
+core: 8.x

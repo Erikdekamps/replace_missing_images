@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * @file
+ * Replace missing images module.
+ *
+ * Todo:
+ * - Replace all images or only missing images?
+ * - Create config page to select which placeholder service to use.
+ * - Allow custom placeholder url?
+ * - Allow setting default width & height.
+ */
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function replace_missing_images_preprocess_image(&$variables) {
+  if (!empty($variables['uri'])) {
+    $url = file_create_url($variables['uri']);
+
+    $width = 600;
+    $height = 400;
+
+    if (!file_exists($url)) {
+
+      if (!empty($variables['width'])) {
+        $width = $variables['width'];
+      }
+      if (!empty($variables['height'])) {
+        $height = $variables['height'];
+      }
+
+      $placeholder_url = "https://placekitten.com/g/$width/$height";
+      $variables['uri'] = $placeholder_url;
+      $variables['attributes']['src'] = $placeholder_url;
+    }
+  }
+}

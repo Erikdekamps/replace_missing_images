@@ -1,0 +1,5 @@
+replace_missing_images.admin_settings:
+  title: 'Replace missing images settings'
+  description: 'Replace missing images admin settings.'
+  route_name: replace_missing_images.admin_settings
+  parent: system.admin_config_media

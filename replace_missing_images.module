@@ -22,7 +22,6 @@ function replace_missing_images_preprocess_image(&$variables) {
     // Create the full file url.
     $url = file_create_url($variables['uri']);
 
-
     if (!file_exists($url)) {
       _replace_missing_images_replace_image($variables);
     }

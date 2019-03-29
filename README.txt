@@ -2,6 +2,8 @@ Replace missing images
 ----------------------
 
 Replaces missing images with remote (dummy) images.
+This is mostly a developer module for developers who don't want to see all those
+missing images on local environments.
 
 
 CONTENTS OF THIS FILE

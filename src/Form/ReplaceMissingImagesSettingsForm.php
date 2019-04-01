@@ -40,12 +40,21 @@ class ReplaceMissingImagesSettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('replace_missing_images.settings');
 
+    $form['enabled'] = [
+      '#title' => $this->t('Enabled'),
+      '#type' => 'checkbox',
+      '#default_value' => $config->get('enabled'),
+    ];
+
     $form['predefined_placeholder_service'] = [
       '#title' => $this->t('Predefined placeholder service'),
       '#type' => 'select',
       '#options' => $this->getDefaultPlaceholderLinks(),
       '#default_value' => $config->get('predefined_placeholder_service'),
       '#states' => [
+        'visible' => [
+          ':input[name="enabled"]' => ['checked' => TRUE],
+        ],
         'disabled' => [
           ':input[name="use_custom_placeholder_service"]' => ['checked' => TRUE],
         ],
@@ -58,6 +67,11 @@ class ReplaceMissingImagesSettingsForm extends ConfigFormBase {
       '#type' => 'number',
       '#default_value' => $config->get('default_placeholder_image_width'),
       '#description' => $this->t('The placeholder image width to use.'),
+      '#states' => [
+        'visible' => [
+          ':input[name="enabled"]' => ['checked' => TRUE],
+        ],
+      ],
     ];
 
     $form['default_placeholder_image_height'] = [
@@ -65,12 +79,22 @@ class ReplaceMissingImagesSettingsForm extends ConfigFormBase {
       '#type' => 'number',
       '#default_value' => $config->get('default_placeholder_image_height'),
       '#description' => $this->t('The placeholder image height to use.'),
+      '#states' => [
+        'visible' => [
+          ':input[name="enabled"]' => ['checked' => TRUE],
+        ],
+      ],
     ];
 
     $form['use_custom_placeholder_service'] = [
       '#title' => $this->t('Use custom placeholder'),
       '#type' => 'checkbox',
       '#default_value' => $config->get('use_custom_placeholder_service'),
+      '#states' => [
+        'visible' => [
+          ':input[name="enabled"]' => ['checked' => TRUE],
+        ],
+      ],
     ];
 
     $form['custom_placeholder_service'] = [
@@ -80,6 +104,7 @@ class ReplaceMissingImagesSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('custom_placeholder_service'),
       '#states' => [
         'visible' => [
+          ':input[name="enabled"]' => ['checked' => TRUE],
           ':input[name="use_custom_placeholder_service"]' => ['checked' => TRUE],
         ],
       ],
@@ -90,6 +115,11 @@ class ReplaceMissingImagesSettingsForm extends ConfigFormBase {
       '#description' => $this->t('Add a hash to the image url to (try and) make sure you get a fresh image each page load.'),
       '#type' => 'checkbox',
       '#default_value' => $config->get('unique'),
+      '#states' => [
+        'visible' => [
+          ':input[name="enabled"]' => ['checked' => TRUE],
+        ],
+      ],
     ];
 
     return parent::buildForm($form, $form_state);
@@ -121,6 +151,7 @@ class ReplaceMissingImagesSettingsForm extends ConfigFormBase {
 
     // Save the configuration.
     $this->config('replace_missing_images.settings')
+      ->set('enabled', $values['enabled'])
       ->set('predefined_placeholder_service', $values['predefined_placeholder_service'])
       ->set('use_custom_placeholder_service', $values['use_custom_placeholder_service'])
       ->set('custom_placeholder_service', $values['custom_placeholder_service'])
@@ -149,7 +180,6 @@ class ReplaceMissingImagesSettingsForm extends ConfigFormBase {
       'http://lorempixel.com/[width]/[height]' => 'Lorempixel',
       'https://placebear.com/[width]/[height]' => 'Placebear',
       'https://placebeard.it/[width]x[height]' => 'Placebeard.it',
-      'https://placebeyonce.com/[width]-[height]' => 'Placebeyoncé',
       'https://www.placecage.com/[width]/[height]' => 'Placecage',
       'http://via.placeholder.com/[width]x[height]' => 'Placeholder',
       'http://placeimg.com/[width]/[height]/any' => 'Placeimg',

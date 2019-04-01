@@ -39,38 +39,42 @@ function _replace_missing_images_replace_image(array &$variables) {
   // Get the replace_missing_images config.
   $config = \Drupal::config('replace_missing_images.settings');
 
-  // Check which placeholder service to use.
-  $placeholder_service = $config->get('predefined_placeholder_service');
-  if (empty($placeholder_service)) {
-    $custom = $config->get('use_custom_placeholder_service');
-    if (!empty($custom)) {
-      $placeholder_service = $config->get('custom_placeholder_service');
+  // Check if enabled.
+  if (!empty($config->get('enabled'))) {
+
+    // Check which placeholder service to use.
+    $placeholder_service = $config->get('predefined_placeholder_service');
+    if (empty($placeholder_service)) {
+      $custom = $config->get('use_custom_placeholder_service');
+      if (!empty($custom)) {
+        $placeholder_service = $config->get('custom_placeholder_service');
+      }
     }
+
+    // Get the default image width and height.
+    $width = $config->get('default_placeholder_image_width');
+    $height = $config->get('default_placeholder_image_height');
+
+    // Check for specified image width and height.
+    if (!empty($variables['width'])) {
+      $width = $variables['width'];
+    }
+    if (!empty($variables['height'])) {
+      $height = $variables['height'];
+    }
+
+    // Replace the width and height placeholders.
+    $placeholder_url = str_replace(['[width]','[height]'], [$width, $height], $placeholder_service);
+
+    // Check for the unique setting and add a random hash to the url.
+    if ($config->get('unique')) {
+      $placeholder_url .= '?unique=' . _replace_missing_images_get_random_string();
+    }
+
+    // Replace the image.
+    $variables['uri'] = $placeholder_url;
+    $variables['attributes']['src'] = $placeholder_url;
   }
-
-  // Get the default image width and height.
-  $width = $config->get('default_placeholder_image_width');
-  $height = $config->get('default_placeholder_image_height');
-
-  // Check for specified image width and height.
-  if (!empty($variables['width'])) {
-    $width = $variables['width'];
-  }
-  if (!empty($variables['height'])) {
-    $height = $variables['height'];
-  }
-
-  // Replace the width and height placeholders.
-  $placeholder_url = str_replace(['[width]','[height]'], [$width, $height], $placeholder_service);
-
-  // Check for the unique setting and add a random hash to the url.
-  if ($config->get('unique')) {
-    $placeholder_url .= '?unique=' . _replace_missing_images_get_random_string();
-  }
-
-  // Replace the image.
-  $variables['uri'] = $placeholder_url;
-  $variables['attributes']['src'] = $placeholder_url;
 }
 
 /**

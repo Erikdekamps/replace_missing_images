@@ -61,7 +61,7 @@ function _replace_missing_images_replace_image(array &$variables) {
   }
 
   // Replace the width and height placeholders.
-  $placeholder_url = str_replace(array('[width]','[height]'), array($width, $height), $placeholder_service);
+  $placeholder_url = str_replace(['[width]','[height]'], array($width, $height), $placeholder_service);
 
   // Check for the unique setting and add a random hash to the url.
   if ($config->get('unique')) {

@@ -50,23 +50,20 @@ CONFIGURATION
 
 The following configuration options are available:
 
- * Enabled
-   An option to enable and disable the module via settings without having to un-
-   install the module.
- * Replace all
-   An option to replace all images whether they are missing or not.
- * Predefined placeholder service
-   A list of predefined placeholder services to use, like placekitten.com.
- * Placeholder image width
-   A default width to configure for the placeholder images to use.
- * Placeholder image height
-   A default height to configure for the placeholder images to use.
- * Custom placeholder service
-   An url field to store a custom placeholder service, for instance:
-   https://example.com/[width]/[height]
- * Unique image
-   An option to configure whether or not to (try and) use unique images on page
-   load. This adds a random hash to the url.
+ * **Enabled** - An option to enable and disable the module via settings 
+   without having to uninstall the module.
+ * **Replace all** - An option to replace all images whether they are missing or 
+   not.
+ * **Predefined placeholder service** - A list of predefined placeholder 
+   services to use, like placekitten.com.
+ * **Placeholder image width** - A default width to configure for the 
+   placeholder images to use.
+ * **Placeholder image height** - A default height to configure for the 
+   placeholder images to use.
+ * **Custom placeholder service** - An url field to store a custom placeholder 
+   service, for instance: https://example.com/[width]/[height]
+ * **Unique image** - An option to configure whether or not to (try and) use 
+   unique images on page load. This adds a random hash to the url.
 
 
 TROUBLESHOOTING

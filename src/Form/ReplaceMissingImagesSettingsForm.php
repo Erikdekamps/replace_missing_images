@@ -46,6 +46,18 @@ class ReplaceMissingImagesSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('enabled'),
     ];
 
+    $form['replace_all'] = [
+      '#title' => $this->t('Replace all images'),
+      '#description' => $this->t('Replace all images, not just the missing ones.'),
+      '#type' => 'checkbox',
+      '#default_value' => $config->get('replace_all'),
+      '#states' => [
+        'visible' => [
+          ':input[name="enabled"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
     $form['predefined_placeholder_service'] = [
       '#title' => $this->t('Predefined placeholder service'),
       '#type' => 'select',
@@ -153,6 +165,7 @@ class ReplaceMissingImagesSettingsForm extends ConfigFormBase {
     $this->config('replace_missing_images.settings')
       ->set('enabled', $values['enabled'])
       ->set('predefined_placeholder_service', $values['predefined_placeholder_service'])
+      ->set('replace_all', $values['replace_all'])
       ->set('use_custom_placeholder_service', $values['use_custom_placeholder_service'])
       ->set('custom_placeholder_service', $values['custom_placeholder_service'])
       ->set('default_placeholder_image_width', $values['default_placeholder_image_width'])

@@ -4,3 +4,5 @@ custom_placeholder_service: ''
 default_placeholder_image_width: '400'
 default_placeholder_image_height: '300'
 unique: 0
+enabled: 1
+replace_all: 0

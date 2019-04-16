@@ -1,9 +1,9 @@
 Replace missing images
 ----------------------
 
-Replaces missing images with remote (dummy) images.
-This is mostly a developer module for developers who don't want to see all those
-missing images on local environments.
+Replaces missing images with remote (dummy) images. This is mostly a developer 
+module for developers who don't want to see all those missing images on local 
+environments.
 
 
 CONTENTS OF THIS FILE
@@ -42,14 +42,19 @@ INSTALLATION
  * Install the Replace missing images module as you would normally install a
    contributed Drupal module.
 
-   Visit https://www.drupal.org/docs/7/extend/installing-modules for further
-   information.
+   Visit https://www.drupal.org/docs/8/extending-drupal-8/installing-drupal-8-modules 
+   for further information.
 
 CONFIGURATION
 -------------
 
 The following configuration options are available:
 
+ * Enabled
+   An option to enable and disable the module via settings without having to un-
+   install the module.
+ * Replace all
+   An option to replace all images whether they are missing or not.
  * Predefined placeholder service
    A list of predefined placeholder services to use, like placekitten.com.
  * Placeholder image width
